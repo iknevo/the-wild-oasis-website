@@ -1,9 +1,25 @@
-import { NextPage } from "next";
+import Counter from "../components/Counter";
 
-interface Props {}
+interface User {
+  id: number;
+  name: string;
+}
 
-const Page: NextPage<Props> = ({}) => {
-  return <div>cabins page</div>;
-};
-
-export default Page;
+export default async function Page({}) {
+  const res = await fetch("https://jsonplaceholder.typicode.com/users");
+  const data = await res.json();
+  console.log(data);
+  return (
+    <>
+      <ul>
+        {data.map((item: User) => (
+          <li key={item.id}>
+            {item.name}
+            {item.id + 1}
+          </li>
+        ))}
+      </ul>
+      <Counter users={data} />
+    </>
+  );
+}
