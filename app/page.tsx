@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import Link from "next/link";
-import Navigation from "./components/Navigation";
 
 interface Props {}
 

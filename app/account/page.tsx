@@ -1,9 +1,8 @@
 import { NextPage } from "next";
 
-interface Props {}
-
-const Page: NextPage<Props> = ({}) => {
-  return <div>account</div>;
+export const metadata = {
+  title: "Account",
 };
-
-export default Page;
+export default function Account() {
+  return <div>Account</div>;
+}
