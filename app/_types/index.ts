@@ -1,8 +1,9 @@
-export interface Cabin {
-  name: string;
+export interface CabinItem {
   id: number;
+  name: string;
   maxCapacity: number;
   regularPrice: number;
   discount: number;
   image: string;
 }
+export type Cabins = CabinItem[];

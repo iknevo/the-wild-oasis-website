@@ -1,4 +1,6 @@
 import { eachDayOfInterval } from "date-fns";
+import { notFound } from "next/navigation";
+import { supabase } from "./supabase";
 
 /////////////
 // GET
@@ -11,10 +13,11 @@ export async function getCabin(id: number) {
     .single();
 
   // For testing
-  // await new Promise((res) => setTimeout(res, 1000));
+  // await new Promise((res) => setTimeout(res, 2000));
 
   if (error) {
     console.error(error);
+    notFound();
   }
 
   return data;
@@ -40,6 +43,9 @@ export const getCabins = async function () {
     .select("id, name, maxCapacity, regularPrice, discount, image")
     .order("name");
 
+  // For testing showing suspense loader for more time
+  // await new Promise((res) => setTimeout(res, 2000));
+
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be loaded");
@@ -60,7 +66,7 @@ export async function getGuest(email: string) {
   return data;
 }
 
-export async function getBooking(id) {
+export async function getBooking(id: number) {
   const { data, error, count } = await supabase
     .from("bookings")
     .select("*")
@@ -75,7 +81,7 @@ export async function getBooking(id) {
   return data;
 }
 
-export async function getBookings(guestId) {
+export async function getBookings(guestId: number) {
   const { data, error, count } = await supabase
     .from("bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
@@ -93,17 +99,17 @@ export async function getBookings(guestId) {
   return data;
 }
 
-export async function getBookedDatesByCabinId(cabinId) {
-  let today = new Date();
+export async function getBookedDatesByCabinId(cabinId: number) {
+  const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
-  today = today.toISOString();
+  const todayString = today.toISOString();
 
   // Getting all bookings
   const { data, error } = await supabase
     .from("bookings")
     .select("*")
     .eq("cabinId", cabinId)
-    .or(`startDate.gte.${today},status.eq.checked-in`);
+    .or(`startDate.gte.${todayString},status.eq.checked-in`);
 
   if (error) {
     console.error(error);
@@ -125,6 +131,8 @@ export async function getBookedDatesByCabinId(cabinId) {
 
 export async function getSettings() {
   const { data, error } = await supabase.from("settings").select("*").single();
+
+  // await new Promise((res) => setTimeout(res, 5000));
 
   if (error) {
     console.error(error);
@@ -159,7 +167,7 @@ export async function createGuest(newGuest) {
 
   return data;
 }
-
+/*
 export async function createBooking(newBooking) {
   const { data, error } = await supabase
     .from("bookings")
@@ -175,10 +183,11 @@ export async function createBooking(newBooking) {
 
   return data;
 }
-
+*/
 /////////////
 // UPDATE
 
+/*
 // The updatedFields is an object which should ONLY contain the updated data
 export async function updateGuest(id, updatedFields) {
   const { data, error } = await supabase
@@ -222,3 +231,4 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+*/

@@ -1,6 +1,5 @@
 import SideNavigation from "@/app/_components/SideNavigation";
 import type { ReactNode } from "react";
-import Header from "../_components/Header";
 
 interface Props {
   children: ReactNode;

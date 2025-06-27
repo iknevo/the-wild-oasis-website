@@ -1,4 +1,8 @@
+import { getCabin } from "@/app/_lib/data-service";
+import { CabinItem } from "@/app/_types";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
+import { NextPage } from "next";
+import Image from "next/image";
 
 // PLACEHOLDER DATA
 const cabin = {
@@ -10,10 +14,16 @@ const cabin = {
   description:
     "Discover the ultimate luxury getaway for couples in the cozy wooden cabin 001. Nestled in a picturesque forest, this stunning cabin offers a secluded and intimate retreat. Inside, enjoy modern high-quality wood interiors, a comfortable seating area, a fireplace and a fully-equipped kitchen. The plush king-size bed, dressed in fine linens guarantees a peaceful nights sleep. Relax in the spa-like shower and unwind on the private deck with hot tub.",
   image:
-    "https://dclaevazetcjjkrzczpc.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg",
+    "https://hxyuutkgtgcugaxwuhrc.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg",
 };
 
-export default function Page() {
+interface Props {
+  params: Promise<{ cabinId: number }>;
+}
+
+const Page: NextPage<Props> = async ({ params }) => {
+  const { cabinId } = await params;
+  const cabin = await getCabin(cabinId);
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
@@ -21,7 +31,12 @@ export default function Page() {
     <div className="max-w-6xl mx-auto mt-8">
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
         <div className="relative scale-[1.15] -translate-x-3">
-          <img src={image} alt={`Cabin ${name}`} />
+          <Image
+            className="object-cover"
+            fill
+            src={image}
+            alt={`Cabin ${name}`}
+          />
         </div>
 
         <div>
@@ -63,4 +78,6 @@ export default function Page() {
       </div>
     </div>
   );
-}
+};
+
+export default Page;
