@@ -2,7 +2,14 @@ import Logo from "@/app/_components/Logo";
 import Navigation from "@/app/_components/Navigation";
 import "@/app/_styles/globals.css";
 import type { Metadata } from "next";
+import { Josefin_Sans } from "next/font/google";
 import { ReactNode } from "react";
+import Header from "./_components/Header";
+
+const josefin = Josefin_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -20,12 +27,13 @@ interface Props {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en">
-      <body className="min-h-dvh bg-primary-950 text-primary-100">
-        <header>
-          <Logo />
-        </header>
-        <Navigation />
-        <main>{children}</main>
+      <body
+        className={`${josefin.className} antialiased min-h-dvh bg-primary-950 text-primary-100 flex flex-col`}
+      >
+        <Header />
+        <div className="flex-1 px-8 py-12 grid">
+          <main className="max-w-7xl mx-auto w-full">{children}</main>
+        </div>
       </body>
     </html>
   );

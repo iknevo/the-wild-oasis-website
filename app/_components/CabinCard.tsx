@@ -1,6 +1,10 @@
+import { Cabin } from "@/app/_types";
 import { UsersIcon } from "@heroicons/react/24/solid";
+interface Props {
+  cabin: Cabin;
+}
 
-function CabinCard({ cabin }) {
+function CabinCard({ cabin }: Props) {
   const { id, name, maxCapacity, regularPrice, discount, image } = cabin;
 
   return (
