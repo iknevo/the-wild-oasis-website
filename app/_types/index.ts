@@ -5,5 +5,7 @@ export interface CabinItem {
   regularPrice: number;
   discount: number;
   image: string;
+  description?: string;
+  created_at?: string;
 }
 export type Cabins = CabinItem[];
