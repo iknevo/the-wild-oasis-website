@@ -1,3 +1,4 @@
+export interface Guest {}
 export interface CabinItem {
   id: number;
   name: string;

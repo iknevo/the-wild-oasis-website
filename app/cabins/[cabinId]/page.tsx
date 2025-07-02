@@ -1,7 +1,6 @@
 import { getCabin, getCabins } from "@/app/_lib/data-service";
 import { CabinItem, Cabins } from "@/app/_types";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
-import { NextPage } from "next";
 import Image from "next/image";
 
 interface Props {
@@ -21,7 +20,7 @@ export async function generateStaticParams() {
   }));
 }
 
-const Page: NextPage<Props> = async ({ params }) => {
+export default async function Page({ params }: Props) {
   const { cabinId } = await params;
   const cabin: CabinItem = await getCabin(cabinId);
   console.log(cabin);
@@ -79,6 +78,4 @@ const Page: NextPage<Props> = async ({ params }) => {
       </div>
     </div>
   );
-};
-
-export default Page;
+}
