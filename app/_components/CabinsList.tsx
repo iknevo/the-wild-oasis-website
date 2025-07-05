@@ -1,8 +1,10 @@
 import { Cabins } from "@/app/_types";
+import { connection } from "next/server";
 import { getCabins } from "../_lib/data-service";
 import CabinCard from "./CabinCard";
 
 export default async function CabinsList() {
+  await connection();
   const cabins: Cabins = await getCabins();
   return (
     cabins.length > 0 && (

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import CabinsList from "../_components/CabinsList";
 import Spinner from "../_components/Spinner";
 
+export const revalidate = 3600; // 1 Hour;
 export const metadata = {
   title: "Cabins",
 };
