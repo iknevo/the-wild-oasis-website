@@ -21,8 +21,6 @@ async function SelectCountry({
   const countries: Countries = await getCountries();
   const flag =
     countries.find((country) => country.name === defaultCountry)?.flag ?? "";
-  console.log(countries);
-
   return (
     <select
       name={name}
