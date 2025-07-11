@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { Suspense } from "react";
 import CabinsList from "../_components/CabinsList";
 import Spinner from "../_components/Spinner";
@@ -7,14 +6,18 @@ export const revalidate = 3600; // 1 Hour;
 export const metadata = {
   title: "Cabins",
 };
+interface Props {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-const Page: NextPage = () => {
+export default async function Page({ searchParams }: Props) {
+  const filterValue = (await searchParams)?.capacity ?? "all";
   return (
     <div>
-      <h1 className="text-4xl mb-5 text-accent-400 font-medium">
+      <h1 className="text-accent-400 mb-5 text-4xl font-medium">
         Our Luxury Cabins
       </h1>
-      <p className="text-primary-200 text-lg mb-10">
+      <p className="text-primary-200 mb-10 text-lg">
         Cozy yet luxurious cabins, located right in the heart of the Italian
         Dolomites. Imagine waking up to beautiful mountain views, spending your
         days exploring the dark forests around, or just relaxing in your private
@@ -23,10 +26,8 @@ const Page: NextPage = () => {
         to paradise.
       </p>
       <Suspense fallback={<Spinner />}>
-        <CabinsList />
+        <CabinsList filter={filterValue} />
       </Suspense>
     </div>
   );
-};
-
-export default Page;
+}
