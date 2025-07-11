@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import CabinsList from "../_components/CabinsList";
+import Filter from "../_components/Filter";
 import Spinner from "../_components/Spinner";
 
 export const revalidate = 3600; // 1 Hour;
@@ -7,7 +8,7 @@ export const metadata = {
   title: "Cabins",
 };
 interface Props {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
 export default async function Page({ searchParams }: Props) {
@@ -25,7 +26,10 @@ export default async function Page({ searchParams }: Props) {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
-      <Suspense fallback={<Spinner />}>
+      <div className="mb-8 flex justify-end">
+        <Filter />
+      </div>
+      <Suspense fallback={<Spinner />} key={filterValue}>
         <CabinsList filter={filterValue} />
       </Suspense>
     </div>
