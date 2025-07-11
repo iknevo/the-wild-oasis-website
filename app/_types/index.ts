@@ -10,3 +10,14 @@ export interface CabinItem {
   created_at?: string;
 }
 export type Cabins = CabinItem[];
+export interface Settings {
+  id: number;
+  breakFastPrice: number;
+  maxBookingLength: number;
+  minBookingLength: number;
+  maxGuestsPerBooking: number;
+}
+export interface Range {
+  from: Date;
+  to: Date;
+}
