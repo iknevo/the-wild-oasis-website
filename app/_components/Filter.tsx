@@ -12,7 +12,7 @@ export default function Filter() {
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
   return (
-    <div className="border-primary-800 border [&>button]:cursor-pointer">
+    <div className="border-primary-800 border">
       <FilterButton
         filterValue="all"
         handleFilter={handleFilter}

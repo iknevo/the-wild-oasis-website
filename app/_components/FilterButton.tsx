@@ -17,7 +17,7 @@ export default function FilterButton({
   }
   return (
     <button
-      className={`hover:bg-primary-700 px-5 py-2 ${isActive(filterValue) ? "bg-primary-700 text-primary-50" : ""}`}
+      className={`hover:bg-primary-700 px-5 py-2 ${isActive(filterValue) ? "bg-primary-700 text-primary-50 cursor-not-allowed" : "cursor-pointer"}`}
       onClick={() => handleFilter(filterValue)}
     >
       {text}

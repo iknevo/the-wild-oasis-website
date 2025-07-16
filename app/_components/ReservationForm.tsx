@@ -1,6 +1,9 @@
+"use client";
 import { CabinItem } from "@/app/_types";
+import useReservation from "../_contexts/useReservation";
 
 function ReservationForm({ cabin }: { cabin: CabinItem }) {
+  const { range } = useReservation();
   // CHANGE
   const { maxCapacity } = cabin;
 
@@ -21,6 +24,9 @@ function ReservationForm({ cabin }: { cabin: CabinItem }) {
         </div> */}
       </div>
 
+      <p>
+        {String(range?.from)} to {String(range?.to)}
+      </p>
       <form className="bg-primary-900 flex flex-col gap-5 px-16 py-10 text-lg">
         <div className="space-y-2">
           <label htmlFor="numGuests">How many guests?</label>
