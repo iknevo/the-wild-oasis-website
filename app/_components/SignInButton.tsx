@@ -1,4 +1,3 @@
-import { signIn } from "@/app/_lib/auth";
 import Image from "next/image";
 import { signInAction } from "../_lib/actions";
 

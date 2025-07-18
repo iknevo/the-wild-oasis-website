@@ -14,12 +14,11 @@ interface Session {
   };
 }
 
-export default async function Page({}) {
+export default async function Page() {
   const session: Session = (await auth()) as Session;
   return (
     <h2 className="text-accent-400 mb-7 text-2xl font-semibold">
       Welcome! {session?.user?.name}
-      {session?.user?.guestId}
     </h2>
   );
 }
