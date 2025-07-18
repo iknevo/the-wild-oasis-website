@@ -1,10 +1,16 @@
 "use client";
 import { CabinItem } from "@/app/_types";
 import useReservation from "../_contexts/useReservation";
-
-function ReservationForm({ cabin }: { cabin: CabinItem }) {
+interface ReservationFormProps {
+  cabin: CabinItem;
+  user?: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
+}
+function ReservationForm({ cabin, user }: ReservationFormProps) {
   const { range } = useReservation();
-  // CHANGE
   const { maxCapacity } = cabin;
 
   return (
@@ -12,21 +18,17 @@ function ReservationForm({ cabin }: { cabin: CabinItem }) {
       <div className="bg-primary-800 text-primary-300 flex items-center justify-between px-16 py-2">
         <p>Logged in as</p>
 
-        {/* <div className='flex gap-4 items-center'>
+        <div className="flex items-center gap-4">
+          <p>{user?.name}</p>
           <img
-            // Important to display google profile images
-            referrerPolicy='no-referrer'
-            className='h-8 rounded-full'
-            src={user.image}
-            alt={user.name}
+            referrerPolicy="no-referrer"
+            className="h-8 rounded-full"
+            src={user?.image ?? "/default-user.jpg"}
+            alt={user?.name ?? "User's profile image"}
           />
-          <p>{user.name}</p>
-        </div> */}
+        </div>
       </div>
 
-      <p>
-        {String(range?.from)} to {String(range?.to)}
-      </p>
       <form className="bg-primary-900 flex flex-col gap-5 px-16 py-10 text-lg">
         <div className="space-y-2">
           <label htmlFor="numGuests">How many guests?</label>
