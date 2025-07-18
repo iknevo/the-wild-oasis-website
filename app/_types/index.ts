@@ -1,4 +1,7 @@
-export interface Guest {}
+export interface Guest {
+  email: string;
+  fullName: string;
+}
 export interface CabinItem {
   id: number;
   name: string;
