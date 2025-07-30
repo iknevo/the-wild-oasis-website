@@ -8,6 +8,6 @@ declare module "next-auth" {
       image: string | null;
       guestId: string | number;
     };
-    expires?: string;
+    expires: string;
   }
 }
