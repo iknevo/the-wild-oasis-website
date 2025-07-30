@@ -1,21 +1,27 @@
 "use client";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
+import { updateGuest } from "../_lib/actions";
+import { Guest } from "../_types";
 
 export default function UpdateProfileForm({
+  guest,
   children,
 }: {
+  guest: Guest;
   children: ReactNode;
 }) {
-  const [count, setCount] = useState(0);
-  // CHANGE
-  const countryFlag = "pt.jpg";
-
+  const { countryFlag, nationality, nationalID, fullName, email } = guest;
   return (
-    <form className="bg-primary-900 flex flex-col gap-6 px-12 py-8 text-lg">
+    <form
+      action={updateGuest}
+      className="bg-primary-900 flex flex-col gap-6 px-12 py-8 text-lg"
+    >
       <div className="space-y-2">
         <label>Full name</label>
         <input
           disabled
+          name="fullName"
+          defaultValue={fullName}
           className="bg-primary-200 text-primary-800 w-full rounded-sm px-5 py-3 shadow-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
         />
       </div>
@@ -24,6 +30,8 @@ export default function UpdateProfileForm({
         <label>Email address</label>
         <input
           disabled
+          name="email"
+          defaultValue={email}
           className="bg-primary-200 text-primary-800 w-full rounded-sm px-5 py-3 shadow-sm disabled:cursor-not-allowed disabled:bg-gray-600 disabled:text-gray-400"
         />
       </div>
@@ -44,6 +52,7 @@ export default function UpdateProfileForm({
         <label htmlFor="nationalID">National ID number</label>
         <input
           name="nationalID"
+          defaultValue={nationalID}
           className="bg-primary-200 text-primary-800 w-full rounded-sm px-5 py-3 shadow-sm"
         />
       </div>

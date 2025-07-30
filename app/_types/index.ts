@@ -1,6 +1,10 @@
 export interface Guest {
+  id: number;
   email: string;
   fullName: string;
+  nationality: string;
+  nationalID: string;
+  countryFlag: string;
 }
 export interface CabinItem {
   id: number;
@@ -29,6 +33,7 @@ export interface Session {
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    guestId: number | null;
   };
-  expires: string;
+  expires?: string;
 }
