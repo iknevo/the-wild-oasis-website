@@ -1,4 +1,3 @@
-"use client";
 import { ReactNode } from "react";
 import { updateGuest } from "../_lib/actions";
 import { Guest } from "../_types";
@@ -11,7 +10,7 @@ export default function UpdateProfileForm({
   guest: Guest;
   children: ReactNode;
 }) {
-  const { countryFlag, nationality, nationalID, fullName, email } = guest;
+  const { countryFlag, nationalID, fullName, email } = guest;
   return (
     <form
       action={updateGuest}
