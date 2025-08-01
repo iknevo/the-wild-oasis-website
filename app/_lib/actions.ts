@@ -1,8 +1,8 @@
 "use server";
-
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { auth, signIn, signOut } from "./auth";
+import { getBookings } from "./data-service";
 import { supabase } from "./supabase";
 
 export async function signInAction() {
@@ -39,4 +39,53 @@ export async function updateGuest(formData: FormData) {
     throw new Error("Guest could not be updated");
   }
   revalidatePath("/account/profile");
+}
+
+export async function deleteReservation(bookingId: string) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in!");
+  const guestBookings = await getBookings(session?.user.guestId!);
+  const guestBookingsIds = guestBookings.map((booking) => booking.id);
+
+  if (!guestBookingsIds.includes(bookingId))
+    throw new Error("You are not allowed to delete this booking!");
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be deleted");
+  }
+  revalidatePath("/account/reservations");
+}
+
+export async function updateReservation(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in!");
+  const reservationId = Number(formData.get("reservationId"));
+  const guestBookings = await getBookings(session?.user.guestId!);
+  const guestBookingsIds = guestBookings.map((booking) => booking.id);
+  if (!guestBookingsIds.includes(reservationId))
+    throw new Error("You are not allowed to update this booking!");
+
+  const updatedFields = {
+    numGuests: Number(formData.get("numGuests")),
+    observations: formData.get("observations")?.slice(0, 1000),
+  };
+
+  const { error } = await supabase
+    .from("bookings")
+    .update(updatedFields)
+    .eq("id", reservationId);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be updated");
+  }
+  revalidatePath("/account/reservations");
+  revalidatePath(`/account/reservations/${reservationId}`);
+  redirect("/account/reservations");
 }
