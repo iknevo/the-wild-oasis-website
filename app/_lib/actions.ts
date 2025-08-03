@@ -41,7 +41,7 @@ export async function updateGuest(formData: FormData) {
   revalidatePath("/account/profile");
 }
 
-export async function deleteReservation(bookingId: string) {
+export async function deleteReservation(bookingId: number) {
   const session = await auth();
   if (!session) throw new Error("You must be logged in!");
   const guestBookings = await getBookings(session?.user.guestId!);

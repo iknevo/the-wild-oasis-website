@@ -37,3 +37,16 @@ export interface Session {
   };
   expires?: string;
 }
+
+export type Booking = {
+  id: number;
+  guestId: number;
+  cabinId: number;
+  cabins: { image: string; name: string };
+  created_at: string;
+  startDate: string;
+  endDate: string;
+  numGuests: number;
+  numNights: number;
+  totalPrice: number;
+};

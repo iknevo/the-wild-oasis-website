@@ -1,17 +1,15 @@
-import ReservationCard from "@/app/_components/ReservationCard";
+import ReservationList from "@/app/_components/ReservationList";
 import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
-import { NextPage } from "next";
+import { Booking } from "@/app/_types";
 
 export const metadata = {
   title: "Reservations",
 };
 
-interface Props {}
-
-const Page: NextPage<Props> = async ({}) => {
+export default async function Page() {
   const session = await auth();
-  const bookings = await getBookings(session?.user.guestId!);
+  const bookings: Booking[] = await getBookings(session?.user.guestId!);
 
   return (
     <div>
@@ -27,14 +25,8 @@ const Page: NextPage<Props> = async ({}) => {
           </a>
         </p>
       ) : (
-        <ul className="space-y-6">
-          {bookings.map((booking) => (
-            <ReservationCard booking={booking} key={booking.id} />
-          ))}
-        </ul>
+        <ReservationList bookings={bookings} />
       )}
     </div>
   );
-};
-
-export default Page;
+}

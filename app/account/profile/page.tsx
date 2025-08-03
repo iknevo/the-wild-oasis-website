@@ -14,7 +14,6 @@ export default async function Page() {
     throw new Error("User is not authenticated or email is missing");
   }
   const guest: Guest = await getGuest(session.user.email);
-  console.log(guest);
 
   return (
     <div>
