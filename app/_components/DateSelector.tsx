@@ -1,7 +1,12 @@
 "use client";
-import { CabinItem, Range, Settings } from "@/app/_types";
-import { isWithinInterval } from "date-fns";
-import { DayPicker } from "react-day-picker";
+import { CabinItem, Settings } from "@/app/_types";
+import {
+  differenceInDays,
+  isPast,
+  isSameDay,
+  isWithinInterval,
+} from "date-fns";
+import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import useReservation from "../_contexts/useReservation";
 
@@ -11,26 +16,28 @@ interface Props {
   bookedDates: Date[];
 }
 
-function isAlreadyBooked(range: Range, datesArr: Date[]) {
-  return (
-    range.from &&
-    range.to &&
-    datesArr.some((date) =>
-      isWithinInterval(date, { start: range.from, end: range.to }),
-    )
+function isAlreadyBooked(range: DateRange | undefined, datesArr: Date[]) {
+  if (!range?.from || !range?.to) return false;
+
+  return datesArr.some((date) =>
+    isWithinInterval(date, { start: range.from!, end: range.to! }),
   );
 }
 
 function DateSelector({ cabin, settings, bookedDates }: Props) {
   const { range, setRange, resetRange } = useReservation();
-  // CHANGE
-  const regularPrice = 23;
-  const discount = 23;
-  const numNights = 23;
-  const cabinPrice = 23;
-  // const range = { from: null, to: null };
 
-  // SETTINGS
+  const displayRange = isAlreadyBooked(range, bookedDates) ? undefined : range;
+
+  const { regularPrice, discount } = cabin;
+
+  const numNights =
+    displayRange?.from && displayRange?.to
+      ? differenceInDays(displayRange?.to, displayRange?.from)
+      : 0;
+
+  const cabinPrice = numNights * regularPrice - discount;
+
   const { minBookingLength, maxBookingLength } = settings;
 
   return (
@@ -39,7 +46,7 @@ function DateSelector({ cabin, settings, bookedDates }: Props) {
         className="place-self-center pt-12"
         mode="range"
         onSelect={setRange}
-        selected={range}
+        selected={displayRange}
         min={minBookingLength + 1}
         max={maxBookingLength}
         fromMonth={new Date()}
@@ -47,6 +54,10 @@ function DateSelector({ cabin, settings, bookedDates }: Props) {
         toYear={new Date().getFullYear() + 5}
         captionLayout="dropdown"
         numberOfMonths={2}
+        disabled={(currentDate) =>
+          isPast(currentDate) ||
+          bookedDates.some((date) => isSameDay(date, currentDate))
+        }
       />
 
       <div className="bg-accent-500 text-primary-800 flex h-[72px] items-center justify-between px-8">
@@ -64,7 +75,8 @@ function DateSelector({ cabin, settings, bookedDates }: Props) {
             )}
             <span className="">/night</span>
           </p>
-          {numNights && (
+
+          {numNights > 0 && (
             <>
               <p className="bg-accent-600 px-3 py-2 text-2xl">
                 <span>&times;</span> <span>{numNights}</span>
