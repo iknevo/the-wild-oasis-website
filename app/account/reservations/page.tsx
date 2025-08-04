@@ -1,6 +1,7 @@
 import ReservationList from "@/app/_components/ReservationList";
 import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
+import { getGuestIdOrThrow } from "@/app/_lib/helpers";
 import { Booking } from "@/app/_types";
 
 export const metadata = {
@@ -9,7 +10,8 @@ export const metadata = {
 
 export default async function Page() {
   const session = await auth();
-  const bookings: Booking[] = await getBookings(session?.user.guestId!);
+  const guestId = getGuestIdOrThrow(session);
+  const bookings: Booking[] = await getBookings(guestId);
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import { getBookedDatesByCabinId, getSettings } from "@/app/_lib/data-service";
-import { CabinItem, Session, Settings } from "@/app/_types";
+import { CabinItem, Settings } from "@/app/_types";
+import { Session } from "next-auth";
 import { auth } from "../_lib/auth";
 import DateSelector from "./DateSelector";
 import LoginMessage from "./LoginMessage";
@@ -13,7 +14,7 @@ export default async function Reservation({ cabin }: Props) {
     getSettings(),
     getBookedDatesByCabinId(cabin.id),
   ]);
-  const session: Session | null = await auth();
+  const session: Session = (await auth())!;
   return (
     <div className="border-primary-800 grid min-h-[400px] grid-cols-2 border">
       <DateSelector

@@ -32,7 +32,6 @@ export async function getCabinPrice(id: number) {
   if (error) {
     console.error(error);
   }
-
   return data;
 }
 
@@ -94,8 +93,12 @@ export async function getBookings(
     console.error(error);
     throw new Error("Bookings could not get loaded");
   }
+  const formatted = data.map((booking) => ({
+    ...booking,
+    cabins: Array.isArray(booking.cabins) ? booking.cabins[0] : booking.cabins,
+  }));
 
-  return data as Booking[];
+  return formatted;
 }
 
 export async function getBookedDatesByCabinId(cabinId: number) {
