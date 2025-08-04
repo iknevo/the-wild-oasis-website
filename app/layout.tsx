@@ -33,10 +33,12 @@ export default function RootLayout({ children }: Props) {
         <Header />
         <div className="grid flex-1 px-8 py-12">
           <main className="mx-auto w-full max-w-7xl">
-            <ReservationProvider>{children}</ReservationProvider>
+            <ReservationProvider>
+              {children}
+              <Analytics />
+            </ReservationProvider>
           </main>
         </div>
-        <Analytics />
       </body>
     </html>
   );
