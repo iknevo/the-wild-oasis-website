@@ -1,4 +1,5 @@
 import "@/app/_styles/globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Josefin_Sans } from "next/font/google";
 import { ReactNode } from "react";
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: Props) {
             <ReservationProvider>{children}</ReservationProvider>
           </main>
         </div>
+        <Analytics />
       </body>
     </html>
   );
