@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Wild Oasis — Guest Website
 
-## Getting Started
+The Wild Oasis website is the customer-facing booking application for a luxury cabin retreat in the Italian Dolomites. Guests can explore cabins, check availability, create reservations, and manage their stays from an authenticated account.
 
-First, run the development server:
+This repository is separate from the staff dashboard in [the-wild-oasis](https://github.com/iknevo/the-wild-oasis).
+
+## Features
+
+- Landing page and hotel/about pages
+- Cabin catalogue with capacity, pricing, discounts, images, and descriptions
+- Cabin detail pages with availability-aware date selection
+- Reservation form with guest count and stay dates
+- Booking price calculation based on nights, regular price, and discount
+- Google sign-in through NextAuth
+- Guest profile management
+- Reservation history with edit and delete actions
+- Server-side data fetching and route-level loading/error states
+- Supabase-backed cabin, guest, booking, and settings data
+- Optimistic reservation deletion in the account area
+
+## Tech stack
+
+- Next.js 15 App Router and React 19
+- TypeScript
+- Supabase Database
+- NextAuth with Google OAuth
+- Tailwind CSS 4
+- date-fns for date calculations
+- Vercel Analytics
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20 or newer
+- npm, pnpm, Yarn, or Bun
+- A Supabase project containing the cabin-booking schema
+- Google OAuth credentials for authentication
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone https://github.com/iknevo/the-wild-oasis-website.git
+cd the-wild-oasis-website
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create `.env.local` with:
 
-## Learn More
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_publishable_key
+AUTH_GOOGLE_ID=your_google_client_id
+AUTH_GOOGLE_SECRET=your_google_client_secret
+AUTH_SECRET=your_nextauth_secret
+```
 
-To learn more about Next.js, take a look at the following resources:
+Configure the corresponding Google OAuth callback URL and Supabase access policies for the deployment origin. Keep all secrets server-side and do not commit `.env.local`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Available scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Command | Description |
+| --- | --- |
+| `pnpm dev` | Start Next.js with Turbopack |
+| `pnpm build` | Create a production build |
+| `pnpm start` | Start the production server |
+| `pnpm prod` | Build and start the production server |
+| `pnpm lint` | Run ESLint |
 
-## Deploy on Vercel
+## Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Route | Purpose |
+| --- | --- |
+| `/` | Guest-facing landing page |
+| `/about` | About the retreat |
+| `/cabins` | Browse cabins |
+| `/cabins/:cabinId` | Cabin details and reservation form |
+| `/login` | Google sign-in |
+| `/account` | Authenticated account overview |
+| `/account/profile` | Update guest profile |
+| `/account/reservations` | View reservations |
+| `/account/reservations/edit/:reservationId` | Edit a reservation |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```text
+app/
+├── _components/          # Shared guest-facing components
+├── _contexts/            # Reservation context
+├── _lib/                 # Auth, Supabase, server actions, and data access
+├── account/              # Authenticated account and reservation routes
+├── cabins/               # Cabin catalogue and reservation routes
+└── api/                  # NextAuth and cabin API routes
+public/                   # Branding and hotel imagery
+```
+
+## Architecture notes
+
+The App Router uses server components and server actions for cabin and reservation operations. Supabase provides the persistence layer, while NextAuth establishes the guest session and maps Google accounts to local guest records. Availability is calculated from existing bookings before the date picker accepts a new reservation.
+
+## Deployment
+
+The application is designed for Vercel:
+
+1. Configure the environment variables in the Vercel project.
+2. Add the production URL to Google OAuth and NextAuth settings.
+3. Configure Supabase policies and redirect URLs.
+4. Build with `pnpm build` and deploy.
+
+## License
+
+No license file is currently included in the repository.
